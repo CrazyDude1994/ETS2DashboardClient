@@ -17,6 +17,25 @@ public class ControlsProtocol {
 
     private Socket mSocket;
 
+    enum Signals {
+        BUTTON_PRESS, SLIDER_CHANGE;
+    }
+
+    enum Sliders {
+
+        HID_USAGE_X(0x30);
+
+        private int number;
+
+        Sliders(int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+    }
+
     @Background
     public void connect(String host, int port) {
         try {
@@ -26,12 +45,23 @@ public class ControlsProtocol {
         }
     }
 
+    public void sendSeekbarSignal(int position, int controlId) {
+        sendSignal(Signals.SLIDER_CHANGE.ordinal(), controlId, false, position);
+    }
+
+    public void sendButtonSignal(int id, boolean isPressed) {
+        sendSignal(Signals.BUTTON_PRESS.ordinal(), id, isPressed, 0);
+    }
+
     @Background
-    public void sendSeekbarSignal(int position) {
+    protected void sendSignal(int commandId, int controlId, boolean controlState, int controlPosition) {
         if (mSocket != null && mSocket.isConnected()) {
             try {
                 DataOutputStream dataOutputStream = new DataOutputStream(mSocket.getOutputStream());
-                dataOutputStream.writeInt(position);
+                dataOutputStream.writeByte(commandId);
+                dataOutputStream.writeInt(controlId);
+                dataOutputStream.writeBoolean(controlState);
+                dataOutputStream.writeInt(controlPosition);
             } catch (IOException e) {
                 e.printStackTrace();
             }
