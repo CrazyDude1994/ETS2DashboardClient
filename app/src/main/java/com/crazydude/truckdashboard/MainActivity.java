@@ -1,18 +1,21 @@
 package com.crazydude.truckdashboard;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ControlsProtocol.OnDataReceivedListener {
 
     @Bean
     ControlsProtocol mClient;
@@ -23,13 +26,16 @@ public class MainActivity extends AppCompatActivity {
     @ViewById(R.id.activity_main_button)
     Button mButton;
 
+    @ViewById(R.id.activity_main_speed)
+    TextView mSpeedText;
+
     @AfterViews
     void initViews() {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (mClient != null) {
-                    mClient.sendSeekbarSignal(progress, 48);
+                    mClient.sendSeekbarSignal(progress, ControlsProtocol.Sliders.HID_USAGE_X);
                 }
             }
 
@@ -57,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        mClient.connect("192.168.1.4", 8844);
+        mClient.connect("192.168.56.1", 8844);
+        mClient.setOnDataReceivedListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @UiThread
+    @Override
+    public void onDataReceived(int data) {
+        mSpeedText.setText("Speed: " + Integer.toString(data));
     }
 }
