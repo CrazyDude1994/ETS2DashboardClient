@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
                 return true;
             }
         });
-        mClient.connect("192.168.56.1", 8844);
+        mClient.connect("192.168.1.4", 8844);
         mClient.setOnDataReceivedListener(this);
     }
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
 
     @UiThread
     @Override
-    public void onDataReceived(int data) {
-        mSpeedText.setText("Speed: " + Integer.toString(data));
+    public void onDataReceived(TruckInfo data) {
+        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
     }
 }
