@@ -11,10 +11,21 @@
         android:scaleType="fitCenter"
         android:src="@drawable/bg_on" />
 
+    <TextView
+        fontPath="fonts/digital display.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="157dp"
+        android:layout_marginTop="94dp"
+        android:text="120"
+        android:textSize="22sp"
+        tools:ignore="MissingPrefix" />
+
     <SeekBar
         android:id="@+id/activity_main_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:max="140" />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.crazydude.truckdashboard;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
@@ -9,6 +10,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements ControlsProtocol.OnDataReceivedListener {
@@ -21,6 +24,11 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
 
     @ViewById(R.id.activity_main_speedometer)
     SpeedometerView mSpeedometerView;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @AfterViews
     void initViews() {
@@ -85,5 +93,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @Override
     public void onDataReceived(TruckInfo data) {
 //        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
+        float kmh = (data.getSpeed() / 1000f) * 3600f;
+        mSpeedometerView.setSpeed(kmh);
     }
 }

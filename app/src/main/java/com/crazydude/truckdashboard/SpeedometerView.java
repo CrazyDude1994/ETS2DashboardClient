@@ -1,11 +1,9 @@
 package com.crazydude.truckdashboard;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.AndroidCharacter;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -14,8 +12,10 @@ import android.widget.ImageView;
  */
 public class SpeedometerView extends ImageView {
 
-    private int mSpeed = 0;
-    private int mMaxSpeed = 100;
+    private float mSpeed = 0;
+    private float mMaxSpeed = 140f;
+    private float mStartAngle = -65f;
+    private float mEndAngle = -295f;
     private Paint mPaint = new Paint();
 
     public SpeedometerView(Context context) {
@@ -38,12 +38,28 @@ public class SpeedometerView extends ImageView {
         mPaint.setStrokeWidth(3);
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         mSpeed = speed;
         invalidate();
     }
 
-    public void setMaxSpeed(int speed) {
+    public float getEndAngle() {
+        return mEndAngle;
+    }
+
+    public void setEndAngle(float mEndAngle) {
+        this.mEndAngle = mEndAngle;
+    }
+
+    public float getStartAngle() {
+        return mStartAngle;
+    }
+
+    public void setStartAngle(float mStartAngle) {
+        this.mStartAngle = mStartAngle;
+    }
+
+    public void setMaxSpeed(float speed) {
         mMaxSpeed = speed;
     }
 
@@ -54,9 +70,16 @@ public class SpeedometerView extends ImageView {
         float factorY = canvas.getHeight() / 1152.0f;
         float offsetX = 573 * factorX;
         float offsetY = 557 * factorY;
-        double posX = 100 * Math.sin(Math.toRadians(mSpeed / 2));
-        double posY = 100 * Math.cos(Math.toRadians(mSpeed / 2));
-        canvas.drawLine(offsetX, offsetY, offsetX + ((float) posX), offsetY + ((float) posY), mPaint);
+        float angleSize = Math.abs(mEndAngle - mStartAngle);
+        float speedCoef = mSpeed / mMaxSpeed;
+        float angle = mStartAngle + (angleSize * (-speedCoef));
+        double sin = Math.sin(Math.toRadians(angle));
+        double cos = Math.cos(Math.toRadians(angle));
+        double startPosX = offsetX + (200 * sin);
+        double startPosY = offsetY + (200 * cos);
+        double endPosX = offsetX + (270 * sin);
+        double endPosY = offsetY + (270 * cos);
+        canvas.drawLine(((float) startPosX), ((float) startPosY), ((float) endPosX), ((float) endPosY), mPaint);
     }
 
 /*
