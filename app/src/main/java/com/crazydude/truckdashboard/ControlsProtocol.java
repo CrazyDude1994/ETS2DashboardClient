@@ -47,7 +47,7 @@ public class ControlsProtocol {
     }
 
     public interface OnDataReceivedListener {
-        void onDataReceived(int data);
+        void onDataReceived(TruckInfo data);
     }
 
     @Background
@@ -74,13 +74,24 @@ public class ControlsProtocol {
 
     @Background
     protected void recvSignal() {
+        TruckInfo truckInfo = new TruckInfo();
         while (mSocket.isConnected()) {
             if (mSocket != null && mSocket.isConnected()) {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(mSocket.getInputStream());
-                    int value = dataInputStream.readInt();
+                    truckInfo.setEngineEnabled(dataInputStream.readBoolean());
+                    truckInfo.setTrailerAttached(dataInputStream.readBoolean());
+                    truckInfo.setSpeed(dataInputStream.readFloat());
+                    truckInfo.setGear(dataInputStream.readInt());
+                    truckInfo.setGears(dataInputStream.readInt());
+                    truckInfo.setRpm(dataInputStream.readFloat());
+                    truckInfo.setRpmMax(dataInputStream.readFloat());
+/*                    truckInfo.setFuel(dataInputStream.readFloat());
+                    truckInfo.setFuelCapacity(dataInputStream.readFloat());
+                    truckInfo.setFuelRate(dataInputStream.readFloat());
+                    truckInfo.setFuelAvgConsumption(dataInputStream.readFloat());*/
                     if (mOnDataReceivedListener != null) {
-                        mOnDataReceivedListener.onDataReceived(value);
+                        mOnDataReceivedListener.onDataReceived(truckInfo);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
