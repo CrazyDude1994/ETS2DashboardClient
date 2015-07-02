@@ -15,11 +15,10 @@ import java.util.ArrayList;
 /**
  * Created by kartavtsev.s on 30.06.2015.
  */
-public class SpeedometerView extends View implements Gaugage.OnValueChangedListener {
+public class SpeedometerView extends ImageView implements Gaugage.OnValueChangedListener {
 
     private Paint mPaint;
     private ArrayList<Gaugage> mGaugages;
-    private Bitmap mBitmap;
 
     public SpeedometerView(Context context) {
         super(context);
@@ -43,20 +42,21 @@ public class SpeedometerView extends View implements Gaugage.OnValueChangedListe
         mGaugages = new ArrayList<>();
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.mBitmap = bitmap;
-        invalidate();
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public void addGaugage(Gaugage gaugage) {
         mGaugages.add(gaugage);
         gaugage.setOnValueChangedListener(this);
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(mBitmap, getMatrix(), null);
+        canvas.setMatrix(getImageMatrix());
         for (Gaugage gaugage : mGaugages) {
             canvas.drawLine(gaugage.getCalculatedStartX(),
                     gaugage.getCalculatedStartY(),

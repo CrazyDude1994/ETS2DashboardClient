@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @AfterViews
     void initMainView() {
 
-        mSpeedGaugage = new Gaugage(0.5f, 0.5f, 140, -65, -295, 200, 270, mSpeedometerView);
+        mSpeedGaugage = new Gaugage(0.28f, 0.55f, 140, -65, -295, 190, 250, mSpeedometerView);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

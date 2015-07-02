@@ -35,6 +35,7 @@ public class Gaugage {
         this.mStartLength = startLength;
         this.mEndLength = endLength;
         this.mSpeedometerView = speedometerView;
+        calculateArrowPosition();
         mSpeedometerView.addGaugage(this);
     }
 
