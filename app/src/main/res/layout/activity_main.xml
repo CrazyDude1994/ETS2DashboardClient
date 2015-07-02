@@ -1,25 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gaugage="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.crazydude.truckdashboard.SpeedometerView
-        android:id="@+id/activity_main_speedometer"
+    <com.crazydude.truckdashboard.GaugageView
+        android:id="@+id/gaugage_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
-        android:src="@drawable/bg_on" />
+        android:src="@drawable/bg_speed"
+        gaugage:coefX="0.5"
+        gaugage:coefY="0.5"
+        gaugage:endAngle="382.5"
+        gaugage:endLength="220"
+        gaugage:maxValue="140"
+        gaugage:startAngle="157.5"
+        gaugage:startLength="0" />
 
-    <TextView
-        fontPath="fonts/digital display.ttf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="157dp"
-        android:layout_marginTop="94dp"
-        android:text="120"
-        android:textSize="22sp"
-        tools:ignore="MissingPrefix" />
 
     <SeekBar
         android:id="@+id/activity_main_seekbar"
