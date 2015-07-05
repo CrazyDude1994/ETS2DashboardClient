@@ -22,10 +22,8 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @ViewById(R.id.activity_main_seekbar)
     SeekBar mSeekBar;
 
-    @ViewById(R.id.activity_main_speedometer)
-    SpeedometerView mSpeedometerView;
-
-    private Gaugage mSpeedGaugage;
+    @ViewById(R.id.gaugage_view)
+    GaugageView mSpeedometerView;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -35,12 +33,12 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @AfterViews
     void initMainView() {
 
-        mSpeedGaugage = new Gaugage(0.28f, 0.55f, 140, -65, -295, 190, 250, mSpeedometerView);
+        mSpeedometerView.setMaxValue(100);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSpeedGaugage.setValue(progress);
+                mSpeedometerView.setValue(progress);
             }
 
             @Override
@@ -99,6 +97,5 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     public void onDataReceived(TruckInfo data) {
 //        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
         float kmh = (data.getSpeed() / 1000f) * 3600f;
-        mSpeedGaugage.setValue(kmh);
     }
 }
