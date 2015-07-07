@@ -7,12 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -33,6 +29,7 @@ public class GaugageView extends ImageView {
     private float mCalculatedEndY;
     private float mCoefX;
     private float mCoefY;
+    private Matrix mScaleMatrix;
 
     public GaugageView(Context context) {
         super(context);
@@ -70,6 +67,7 @@ public class GaugageView extends ImageView {
         mCurrentValue = 0;
         typedArray.recycle();
         calculateArrowPosition();
+        mScaleMatrix = new Matrix();
     }
 
 /*    @Override
@@ -81,17 +79,22 @@ public class GaugageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float width = canvas.getWidth();
-        float height = canvas.getHeight();
 
         float[] points = {mCalculatedStartX, mCalculatedStartY,
-                mCalculatedEndX, mCalculatedEndY,
-                height};
+                mCalculatedEndX, mCalculatedEndY};
 
         getImageMatrix().mapPoints(points);
 
-        float scaledX = points[4] * mCoefX;
-        float scaledY = points[5] * mCoefY;
+        float[] sizePoints = {getDrawable().getIntrinsicWidth(), getDrawable().getIntrinsicHeight()};
+
+        float[] scaleValues = new float[9];
+        getImageMatrix().getValues(scaleValues);
+        mScaleMatrix.setScale(scaleValues[Matrix.MSCALE_X], scaleValues[Matrix.MSCALE_Y]);
+
+        mScaleMatrix.mapPoints(sizePoints);
+
+        float scaledX = sizePoints[0] * mCoefX;
+        float scaledY = sizePoints[1] * mCoefY;
 
         mPaint.setColor(Color.RED);
         mPaint.setStrokeWidth(3);

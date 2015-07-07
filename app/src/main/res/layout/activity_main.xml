@@ -7,12 +7,12 @@
 
     <com.crazydude.truckdashboard.GaugageView
         android:id="@+id/gaugage_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
         android:src="@drawable/bg_speed"
-        gaugage:coefX="1"
-        gaugage:coefY="1"
+        gaugage:coefX="0.5"
+        gaugage:coefY="0.5"
         gaugage:endAngle="382.5"
         gaugage:endLength="220"
         gaugage:maxValue="140"
