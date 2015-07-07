@@ -25,15 +25,10 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @ViewById(R.id.gaugage_view)
     GaugageView mSpeedometerView;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @AfterViews
     void initMainView() {
 
-        mSpeedometerView.setMaxValue(100);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

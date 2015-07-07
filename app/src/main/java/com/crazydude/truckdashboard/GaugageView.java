@@ -5,15 +5,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by kartavtsev.s on 30.06.2015.
  */
-public class GaugageView extends View {
+public class GaugageView extends ImageView {
 
     private Paint mPaint;
     private float mCurrentValue;
@@ -26,6 +31,8 @@ public class GaugageView extends View {
     private float mCalculatedStartY;
     private float mCalculatedEndX;
     private float mCalculatedEndY;
+    private float mCoefX;
+    private float mCoefY;
 
     public GaugageView(Context context) {
         super(context);
@@ -51,37 +58,51 @@ public class GaugageView extends View {
 
     private void init(AttributeSet attrs) {
         mPaint = new Paint();
-        mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(3);
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugageView);
         mStartAngle = typedArray.getFloat(R.styleable.GaugageView_startAngle, 0);
         mEndAngle = typedArray.getFloat(R.styleable.GaugageView_endAngle, 360);
         mStartLength = typedArray.getFloat(R.styleable.GaugageView_startLength, 0);
         mEndLength = typedArray.getFloat(R.styleable.GaugageView_endLength, 50);
+        mMaxValue = typedArray.getFloat(R.styleable.GaugageView_maxValue, Math.abs(mEndAngle - mStartAngle));
+        mCoefX = typedArray.getFloat(R.styleable.GaugageView_coefX, 0.5f);
+        mCoefY = typedArray.getFloat(R.styleable.GaugageView_coefY, 0.5f);
         mCurrentValue = 0;
-        mMaxValue = Math.abs(mEndAngle - mStartAngle);
+        typedArray.recycle();
         calculateArrowPosition();
     }
 
-    @Override
+/*    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int a = (int) (mEndLength * 2);
+        int a = (int) (Math.max(mEndLength, mCircleRadius) * 2);
         setMeasuredDimension(a, a);
-    }
+    }*/
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = canvas.getWidth() / 2;
-        int height = canvas.getHeight() / 2;
-        canvas.drawLine(width + mCalculatedStartX, height + mCalculatedStartY, width + mCalculatedEndX, height + mCalculatedEndY, mPaint);
+        float width = canvas.getWidth();
+        float height = canvas.getHeight();
+
+        float[] points = {mCalculatedStartX, mCalculatedStartY,
+                mCalculatedEndX, mCalculatedEndY,
+                height};
+
+        getImageMatrix().mapPoints(points);
+
+        float scaledX = points[4] * mCoefX;
+        float scaledY = points[5] * mCoefY;
+
+        mPaint.setColor(Color.RED);
+        mPaint.setStrokeWidth(3);
+        canvas.drawLine(points[0] + scaledX, points[1] + scaledY, points[2] + scaledX,
+                points[3] + scaledY, mPaint);
     }
 
     private void calculateArrowPosition() {
         float angleSize = Math.abs(mEndAngle - mStartAngle);
         float valueCoef = mCurrentValue / mMaxValue;
-        float angle = mStartAngle + (angleSize * (-valueCoef));
+        float angle = -mStartAngle + (angleSize * -valueCoef) + 90;
         double sin = Math.sin(Math.toRadians(angle));
         double cos = Math.cos(Math.toRadians(angle));
         mCalculatedStartX = (float) (mStartLength * sin);

@@ -11,5 +11,8 @@
         <attr name="endAngle" format="float" />
         <attr name="startLength" format="float" />
         <attr name="endLength" format="float" />
+        <attr name="maxValue" format="float" />
+        <attr name="coefX" format="float" />
+        <attr name="coefY" format="float" />
     </declare-styleable>
 </resources>
