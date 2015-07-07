@@ -59,8 +59,8 @@ public class GaugeView extends ImageView {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugeView);
         mStartAngle = typedArray.getFloat(R.styleable.GaugeView_startAngle, 0);
         mEndAngle = typedArray.getFloat(R.styleable.GaugeView_endAngle, 360);
-        mStartLength = typedArray.getFloat(R.styleable.GaugeView_startLength, 0);
-        mEndLength = typedArray.getFloat(R.styleable.GaugeView_endLength, 50);
+        mStartLength = typedArray.getDimension(R.styleable.GaugeView_startLength, 0);
+        mEndLength = typedArray.getDimension(R.styleable.GaugeView_endLength, 50);
         mMaxValue = typedArray.getFloat(R.styleable.GaugeView_maxValue, Math.abs(mEndAngle - mStartAngle));
         mCoefX = typedArray.getFloat(R.styleable.GaugeView_coefX, 0.5f);
         mCoefY = typedArray.getFloat(R.styleable.GaugeView_coefY, 0.5f);
