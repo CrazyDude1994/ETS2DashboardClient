@@ -14,7 +14,7 @@ import android.widget.ImageView;
 /**
  * Created by kartavtsev.s on 30.06.2015.
  */
-public class GaugageView extends ImageView {
+public class GaugeView extends ImageView {
 
     private Paint mPaint;
     private float mCurrentValue;
@@ -31,24 +31,24 @@ public class GaugageView extends ImageView {
     private float mCoefY;
     private Matrix mScaleMatrix;
 
-    public GaugageView(Context context) {
+    public GaugeView(Context context) {
         super(context);
         init(null);
     }
 
-    public GaugageView(Context context, AttributeSet attrs) {
+    public GaugeView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public GaugageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GaugeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public GaugageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public GaugeView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
@@ -56,14 +56,14 @@ public class GaugageView extends ImageView {
     private void init(AttributeSet attrs) {
         mPaint = new Paint();
 
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugageView);
-        mStartAngle = typedArray.getFloat(R.styleable.GaugageView_startAngle, 0);
-        mEndAngle = typedArray.getFloat(R.styleable.GaugageView_endAngle, 360);
-        mStartLength = typedArray.getFloat(R.styleable.GaugageView_startLength, 0);
-        mEndLength = typedArray.getFloat(R.styleable.GaugageView_endLength, 50);
-        mMaxValue = typedArray.getFloat(R.styleable.GaugageView_maxValue, Math.abs(mEndAngle - mStartAngle));
-        mCoefX = typedArray.getFloat(R.styleable.GaugageView_coefX, 0.5f);
-        mCoefY = typedArray.getFloat(R.styleable.GaugageView_coefY, 0.5f);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugeView);
+        mStartAngle = typedArray.getFloat(R.styleable.GaugeView_startAngle, 0);
+        mEndAngle = typedArray.getFloat(R.styleable.GaugeView_endAngle, 360);
+        mStartLength = typedArray.getFloat(R.styleable.GaugeView_startLength, 0);
+        mEndLength = typedArray.getFloat(R.styleable.GaugeView_endLength, 50);
+        mMaxValue = typedArray.getFloat(R.styleable.GaugeView_maxValue, Math.abs(mEndAngle - mStartAngle));
+        mCoefX = typedArray.getFloat(R.styleable.GaugeView_coefX, 0.5f);
+        mCoefY = typedArray.getFloat(R.styleable.GaugeView_coefY, 0.5f);
         mCurrentValue = 0;
         typedArray.recycle();
         calculateArrowPosition();

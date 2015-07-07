@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="GaugageLayout">
+    <declare-styleable name="GaugeLayout">
         <attr name="perctangeX" format="float" />
         <attr name="perctangeY" format="float" />
         <attr name="drawable" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="GaugageView">
+    <declare-styleable name="GaugeView">
         <attr name="startAngle" format="float" />
         <attr name="endAngle" format="float" />
         <attr name="startLength" format="float" />

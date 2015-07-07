@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -16,35 +15,35 @@ import android.view.ViewGroup;
 /**
  * Created by Crazy on 03.07.2015.
  */
-public class GaugageLayout extends ViewGroup {
+public class GaugeLayout extends ViewGroup {
 
     private Drawable mBackgroundDrawable;
     private Matrix mMatrix;
 
-    public GaugageLayout(Context context) {
+    public GaugeLayout(Context context) {
         super(context);
         init(null);
     }
 
-    public GaugageLayout(Context context, AttributeSet attrs) {
+    public GaugeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public GaugageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GaugeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public GaugageLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public GaugeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
 
     private void init(AttributeSet attrs) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugageLayout);
-        mBackgroundDrawable = typedArray.getDrawable(R.styleable.GaugageLayout_drawable);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GaugeLayout);
+        mBackgroundDrawable = typedArray.getDrawable(R.styleable.GaugeLayout_drawable);
         typedArray.recycle();
         setWillNotDraw(false);
 
@@ -115,9 +114,9 @@ public class GaugageLayout extends ViewGroup {
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            TypedArray array = c.obtainStyledAttributes(attrs, R.styleable.GaugageLayout);
-            perctangeX = array.getFloat(R.styleable.GaugageLayout_perctangeX, 0);
-            perctangeY = array.getFloat(R.styleable.GaugageLayout_perctangeY, 0);
+            TypedArray array = c.obtainStyledAttributes(attrs, R.styleable.GaugeLayout);
+            perctangeX = array.getFloat(R.styleable.GaugeLayout_perctangeX, 0);
+            perctangeY = array.getFloat(R.styleable.GaugeLayout_perctangeY, 0);
             array.recycle();
         }
 

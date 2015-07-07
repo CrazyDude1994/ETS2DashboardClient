@@ -1,6 +1,5 @@
 package com.crazydude.truckdashboard;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
@@ -10,8 +9,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements ControlsProtocol.OnDataReceivedListener {
@@ -23,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     SeekBar mSeekBar;
 
     @ViewById(R.id.gaugage_view)
-    GaugageView mSpeedometerView;
+    GaugeView mSpeedometerView;
 
 
     @AfterViews

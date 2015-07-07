@@ -1,23 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:gaugage="http://schemas.android.com/apk/res-auto"
+    xmlns:gauge="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.crazydude.truckdashboard.GaugageView
+    <com.crazydude.truckdashboard.GaugeView
         android:id="@+id/gaugage_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:src="@drawable/bg_speed"
-        gaugage:coefX="0.5"
-        gaugage:coefY="0.5"
-        gaugage:endAngle="382.5"
-        gaugage:endLength="220"
-        gaugage:maxValue="140"
-        gaugage:startAngle="157.5"
-        gaugage:startLength="0" />
+        gauge:coefX="0.47"
+        gauge:coefY="0.68"
+        gauge:endAngle="384"
+        gauge:endLength="250"
+        gauge:maxValue="140"
+        gauge:startAngle="155.5"
+        gauge:startLength="200" />
 
 
     <SeekBar
