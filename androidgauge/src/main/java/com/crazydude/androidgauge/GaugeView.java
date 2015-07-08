@@ -1,4 +1,4 @@
-package com.crazydude.truckdashboard;
+package com.crazydude.androidgauge;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -70,16 +70,9 @@ public class GaugeView extends ImageView {
         mScaleMatrix = new Matrix();
     }
 
-/*    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int a = (int) (Math.max(mEndLength, mCircleRadius) * 2);
-        setMeasuredDimension(a, a);
-    }*/
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         float[] points = {mCalculatedStartX, mCalculatedStartY,
                 mCalculatedEndX, mCalculatedEndY};
 

@@ -2,7 +2,8 @@ package com.crazydude.truckdashboard;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.SeekBar;
+
+import com.crazydude.androidgauge.GaugeView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -16,33 +17,22 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @Bean
     ControlsProtocol mClient;
 
-    @ViewById(R.id.activity_main_seekbar)
-    SeekBar mSeekBar;
+    @ViewById(R.id.gaugage_speed)
+    GaugeView mSpeedometer;
 
-    @ViewById(R.id.gaugage_view)
-    GaugeView mSpeedometerView;
+    @ViewById(R.id.gaugage_rpm)
+    GaugeView mRPM;
+
+    @ViewById(R.id.gaugage_fuel)
+    GaugeView mFuel;
+
+    private boolean mIsMaxRPMSet = false;
+    private boolean mIsMaxFuelSet = false;
 
 
     @AfterViews
     void initMainView() {
 
-
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSpeedometerView.setValue(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 /*        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -75,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
                 return true;
             }
         });*/
-        mClient.connect("192.168.1.2", 8844);
+        mClient.connect("192.168.1.2", 8845);
         mClient.setOnDataReceivedListener(this);
     }
 
@@ -89,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     public void onDataReceived(TruckInfo data) {
 //        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
         float kmh = (data.getSpeed() / 1000f) * 3600f;
-        mSpeedometerView.setValue(kmh);
+        mSpeedometer.setValue(kmh);
+        if (!mIsMaxRPMSet) {
+            mRPM.setMaxValue(data.getRpmMax());
+        }
+        if (!mIsMaxFuelSet) {
+            mFuel.setMaxValue(data.getFuelCapacity());
+        }
+        mRPM.setValue(data.getRpm());
+        mFuel.setValue(data.getFuel());
     }
 }
