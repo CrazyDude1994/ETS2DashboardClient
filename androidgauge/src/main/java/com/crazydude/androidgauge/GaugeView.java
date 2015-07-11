@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -29,7 +30,10 @@ public class GaugeView extends ImageView {
     private float mCalculatedEndY;
     private float mCoefX;
     private float mCoefY;
+    private float mArrowWidth;
+    private int mArrowColor;
     private Matrix mScaleMatrix;
+    private Drawable mArrowDrawable;
 
     public GaugeView(Context context) {
         super(context);
@@ -64,9 +68,13 @@ public class GaugeView extends ImageView {
         mMaxValue = typedArray.getFloat(R.styleable.GaugeView_maxValue, Math.abs(mEndAngle - mStartAngle));
         mCoefX = typedArray.getFloat(R.styleable.GaugeView_coefX, 0.5f);
         mCoefY = typedArray.getFloat(R.styleable.GaugeView_coefY, 0.5f);
+        mArrowDrawable = typedArray.getDrawable(R.styleable.GaugeView_arrowDrawable);
+        mArrowWidth = typedArray.getFloat(R.styleable.GaugeView_arrowWidth, 1);
+        mArrowColor = typedArray.getColor(R.styleable.GaugeView_arrowColor, Color.RED);
         mCurrentValue = 0;
         typedArray.recycle();
         calculateArrowPosition();
+        //matrix used for scaling arrow acording to image matrix
         mScaleMatrix = new Matrix();
     }
 
@@ -76,6 +84,7 @@ public class GaugeView extends ImageView {
         float[] points = {mCalculatedStartX, mCalculatedStartY,
                 mCalculatedEndX, mCalculatedEndY};
 
+        //transform position of the arrow to the image matrix
         getImageMatrix().mapPoints(points);
 
         float[] sizePoints = {getDrawable().getIntrinsicWidth(), getDrawable().getIntrinsicHeight()};
@@ -86,13 +95,19 @@ public class GaugeView extends ImageView {
 
         mScaleMatrix.mapPoints(sizePoints);
 
-        float scaledX = sizePoints[0] * mCoefX;
-        float scaledY = sizePoints[1] * mCoefY;
+        //set arrow relative to the image position
+        float scaledX = sizePoints[0] * mCoefX; //width
+        float scaledY = sizePoints[1] * mCoefY; //height
 
-        mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(3);
-        canvas.drawLine(points[0] + scaledX, points[1] + scaledY, points[2] + scaledX,
-                points[3] + scaledY, mPaint);
+        if (mArrowDrawable == null) {
+            mPaint.setColor(mArrowColor);
+            mPaint.setStrokeWidth(mArrowWidth);
+            canvas.drawLine(points[0] + scaledX, points[1] + scaledY, points[2] + scaledX,
+                    points[3] + scaledY, mPaint);
+        } else {
+            //todo: add custom arrow drawables
+            mArrowDrawable.draw(canvas);
+        }
     }
 
     private void calculateArrowPosition() {
@@ -106,6 +121,22 @@ public class GaugeView extends ImageView {
         mCalculatedEndX = (float) (mEndLength * sin);
         mCalculatedEndY = (float) (mEndLength * cos);
         invalidate();
+    }
+
+    public float getArrowWidth() {
+        return mArrowWidth;
+    }
+
+    public void setArrowWidth(float mArrowWidth) {
+        this.mArrowWidth = mArrowWidth;
+    }
+
+    public int getArrowColor() {
+        return mArrowColor;
+    }
+
+    public void setArrowColor(int mArrowColor) {
+        this.mArrowColor = mArrowColor;
     }
 
     public void setStartLength(float startLength) {

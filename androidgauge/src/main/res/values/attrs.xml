@@ -8,5 +8,8 @@
         <attr name="maxValue" format="float" />
         <attr name="coefX" format="float" />
         <attr name="coefY" format="float" />
+        <attr name="arrowDrawable" format="reference" />
+        <attr name="arrowColor" format="reference|color" />
+        <attr name="arrowWidth" format="dimension|float|integer" />
     </declare-styleable>
 </resources>

@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     @ViewById(R.id.gaugage_speed)
     GaugeView mSpeedometer;
 
-    @ViewById(R.id.gaugage_rpm)
+/*    @ViewById(R.id.gaugage_rpm)
     GaugeView mRPM;
 
     @ViewById(R.id.gaugage_fuel)
-    GaugeView mFuel;
+    GaugeView mFuel;*/
 
     private boolean mIsMaxRPMSet = false;
     private boolean mIsMaxFuelSet = false;
@@ -80,13 +80,13 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
 //        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
         float kmh = (data.getSpeed() / 1000f) * 3600f;
         mSpeedometer.setValue(kmh);
-        if (!mIsMaxRPMSet) {
+/*        if (!mIsMaxRPMSet) {
             mRPM.setMaxValue(data.getRpmMax());
         }
         if (!mIsMaxFuelSet) {
             mFuel.setMaxValue(data.getFuelCapacity());
         }
         mRPM.setValue(data.getRpm());
-        mFuel.setValue(data.getFuel());
+        mFuel.setValue(data.getFuel());*/
     }
 }
