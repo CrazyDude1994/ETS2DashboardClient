@@ -1,11 +1,21 @@
 package com.crazydude.truckdashboard;
 
+import android.util.JsonReader;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.Socket;
 
 import javax.net.SocketFactory;
@@ -47,7 +57,7 @@ public class ControlsProtocol {
     }
 
     public interface OnDataReceivedListener {
-        void onDataReceived(TruckInfo data);
+        void onDataReceived(Data data);
     }
 
     @Background
@@ -74,25 +84,22 @@ public class ControlsProtocol {
 
     @Background
     protected void recvSignal() {
-        TruckInfo truckInfo = new TruckInfo();
-        while (mSocket.isConnected()) {
+        while (mSocket != null && mSocket.isConnected()) {
             if (mSocket != null && mSocket.isConnected()) {
                 try {
                     DataInputStream dataInputStream = new DataInputStream(mSocket.getInputStream());
-                    truckInfo.setEngineEnabled(dataInputStream.readBoolean());
-                    truckInfo.setTrailerAttached(dataInputStream.readBoolean());
-                    truckInfo.setSpeed(dataInputStream.readFloat());
-                    truckInfo.setGear(dataInputStream.readInt());
-                    truckInfo.setGears(dataInputStream.readInt());
-                    truckInfo.setRpm(dataInputStream.readFloat());
-                    truckInfo.setRpmMax(dataInputStream.readFloat());
-/*                    truckInfo.setFuel(dataInputStream.readFloat());
-                    truckInfo.setFuelCapacity(dataInputStream.readFloat());
-                    truckInfo.setFuelRate(dataInputStream.readFloat());
-                    truckInfo.setFuelAvgConsumption(dataInputStream.readFloat());*/
+                    int length = dataInputStream.readInt();
+                    byte[] data = new byte[length];
+                    dataInputStream.read(data, 0, length);
+                    String json = new String(data);
+                    Gson gson = new GsonBuilder()
+                            .create();
+                    Data dataObject = gson.fromJson(json, Data.class);
                     if (mOnDataReceivedListener != null) {
-                        mOnDataReceivedListener.onDataReceived(truckInfo);
+                        mOnDataReceivedListener.onDataReceived(dataObject);
                     }
+                } catch (EOFException e) {
+                    mSocket = null;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -109,6 +116,8 @@ public class ControlsProtocol {
                 dataOutputStream.writeInt(controlId);
                 dataOutputStream.writeBoolean(controlState);
                 dataOutputStream.writeInt(controlPosition);
+            } catch (EOFException e) {
+                mSocket = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }

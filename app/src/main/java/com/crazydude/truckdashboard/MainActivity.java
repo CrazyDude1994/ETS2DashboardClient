@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
                 return true;
             }
         });*/
-        mClient.connect("192.168.1.2", 8845);
+        mClient.connect("192.168.1.3", 8845);
         mClient.setOnDataReceivedListener(this);
     }
 
@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
 
     @UiThread
     @Override
-    public void onDataReceived(TruckInfo data) {
+    public void onDataReceived(Data data) {
 //        mSpeedText.setText("Speed: " + Float.toString(data.getSpeed()));
-        float kmh = (data.getSpeed() / 1000f) * 3600f;
+        float kmh = (data.getTruck().getSpeed() / 1000f) * 3600f;
         mSpeedometer.setValue(kmh);
 /*        if (!mIsMaxRPMSet) {
             mRPM.setMaxValue(data.getRpmMax());
