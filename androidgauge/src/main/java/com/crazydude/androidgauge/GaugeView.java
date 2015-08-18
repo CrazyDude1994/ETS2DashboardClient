@@ -95,9 +95,19 @@ public class GaugeView extends ImageView {
 
         mScaleMatrix.mapPoints(sizePoints);
 
-        //set arrow relative to the image position
-        float scaledX = sizePoints[0] * mCoefX; //width
-        float scaledY = sizePoints[1] * mCoefY; //height
+        float scaledX;
+        float scaledY;
+
+        if (isInEditMode()) {
+            scaledX = getDrawable().getIntrinsicWidth() * mCoefX; //width
+            scaledY = getDrawable().getIntrinsicHeight() * mCoefY; //height
+            mPaint.setColor(Color.argb(100, 0, 0, 0));
+            canvas.drawCircle(scaledX, scaledY, mEndLength, mPaint);
+        } else {
+            //set arrow relative to the image position
+            scaledX = sizePoints[0] * mCoefX; //width
+            scaledY = sizePoints[1] * mCoefY; //height
+        }
 
         if (mArrowDrawable == null) {
             mPaint.setColor(mArrowColor);
@@ -142,7 +152,6 @@ public class GaugeView extends ImageView {
     public void setStartLength(float startLength) {
         this.mStartLength = startLength;
     }
-
 
     public void setEndLength(float endLength) {
         this.mEndLength = endLength;
