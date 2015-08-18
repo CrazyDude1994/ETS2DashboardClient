@@ -12,14 +12,19 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity_"
+            android:name=".HomeActivity_"
             android:label="@string/app_name"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SpeedometerActivity_"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorLandscape">
         </activity>
     </application>
 

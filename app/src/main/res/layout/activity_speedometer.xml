@@ -14,11 +14,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            android:src="@drawable/bg_speed"
+            android:src="@drawable/speedometer_off"
+            gauge:arrowColor="#FF00"
+            gauge:arrowWidth="10"
+            gauge:coefX="0.505"
+            gauge:coefY="0.755"
+            gauge:endLength="125dp" />
+
+        <com.crazydude.androidgauge.GaugeView
+            android:id="@+id/gaugage_fuel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/fuel_off"
             gauge:arrowColor="#FFFF00"
             gauge:arrowWidth="10"
             gauge:coefX="0.5"
             gauge:coefY="0.5" />
+
+        <TextView
+            style="@style/DigitalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="122" />
 
         <!--                <LinearLayout
                             android:layout_width="match_parent"

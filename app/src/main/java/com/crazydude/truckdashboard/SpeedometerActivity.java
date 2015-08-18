@@ -1,7 +1,9 @@
 package com.crazydude.truckdashboard;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.crazydude.androidgauge.GaugeView;
 
@@ -11,8 +13,10 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-@EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements ControlsProtocol.OnDataReceivedListener {
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+@EActivity(R.layout.activity_speedometer)
+public class SpeedometerActivity extends AppCompatActivity implements ControlsProtocol.OnDataReceivedListener {
 
     @Bean
     ControlsProtocol mClient;
@@ -21,13 +25,15 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
     GaugeView mSpeedometer;
 
 /*    @ViewById(R.id.gaugage_rpm)
-    GaugeView mRPM;
+    GaugeView mRPM;*/
 
     @ViewById(R.id.gaugage_fuel)
-    GaugeView mFuel;*/
+    GaugeView mFuel;
 
     private boolean mIsMaxRPMSet = false;
     private boolean mIsMaxFuelSet = false;
+
+    private boolean engineEnabled = false;
 
 
     @AfterViews
@@ -69,6 +75,17 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
         mClient.setOnDataReceivedListener(this);
     }
 
+    public void switchEngine(View view) {
+        if (engineEnabled) {
+            mSpeedometer.setImageResource(R.drawable.speedometer_off);
+            mFuel.setImageResource(R.drawable.fuel_off);
+        } else {
+            mSpeedometer.setImageResource(R.drawable.speedometer_on);
+            mFuel.setImageResource(R.drawable.fuel_on);
+        }
+        engineEnabled = !engineEnabled;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,5 +105,10 @@ public class MainActivity extends AppCompatActivity implements ControlsProtocol.
         }
         mRPM.setValue(data.getRpm());
         mFuel.setValue(data.getFuel());*/
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
