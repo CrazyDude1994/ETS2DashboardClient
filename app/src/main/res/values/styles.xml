@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="DigitalText" parent="TextAppearance.AppCompat">
+        <item name="fontPath">fonts/digital display.ttf</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
 </resources>
